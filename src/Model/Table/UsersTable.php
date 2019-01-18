@@ -123,10 +123,11 @@ class UsersTable extends Table
             'conditions' => $uniqueUserConditions,
             'contain' => ['Users'],
         ]);
-        
-        //If there is an LtiUserUsers record for this user, use this user
+		
+		//If there is an LtiUserUsers record for this user, use this user
         $savedLtiUser = $ltiUserQuery->first(); //Use the first result, as it doesn't matter which context we get it from, the User record will be the same
-        if(!empty($savedLtiUser)) {
+		
+		if(!empty($savedLtiUser)) {
             //Get user from LTI 
             $user = $savedLtiUser->user;
         }

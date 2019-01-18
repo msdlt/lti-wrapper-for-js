@@ -72,7 +72,7 @@ class LTI_Data_Connector_MySQL extends LTI_Data_Connector {
                    "FROM {$this->dbTableNamePrefix}" . LTI_Data_Connector::CONSUMER_TABLE_NAME . ' ' .
                    "WHERE consumer_key = %s",
        LTI_Data_Connector::quoted($consumer->getKey()));
-    $rs_consumer = mysql_query($sql);
+    $rs_consumer = mysqli_query($sql);
     if ($rs_consumer) {
       $row = mysql_fetch_object($rs_consumer);
       if ($row) {

@@ -1,16 +1,16 @@
 <?php
 /**
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
  * @since         3.0.0
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 namespace Cake\Database\Driver;
 
@@ -20,11 +20,13 @@ use Cake\Database\Query;
 use Cake\Database\Statement\MysqlStatement;
 use PDO;
 
+/**
+ * Class Mysql
+ */
 class Mysql extends Driver
 {
 
     use MysqlDialectTrait;
-    use PDODriverTrait;
 
     /**
      * Base configuration settings for MySQL driver
@@ -39,10 +41,24 @@ class Mysql extends Driver
         'database' => 'cake',
         'port' => '3306',
         'flags' => [],
-        'encoding' => 'utf8',
+        'encoding' => 'utf8mb4',
         'timezone' => null,
         'init' => [],
     ];
+
+    /**
+     * The server version
+     *
+     * @var string
+     */
+    protected $_version;
+
+    /**
+     * Whether or not the server supports native JSON
+     *
+     * @var bool
+     */
+    protected $_supportsNativeJson;
 
     /**
      * Establishes a connection to the database server
@@ -64,7 +80,7 @@ class Mysql extends Driver
             $config['init'][] = sprintf("SET time_zone = '%s'", $config['timezone']);
         }
         if (!empty($config['encoding'])) {
-            $config['init'][] = sprintf("SET NAMES %s", $config['encoding']);
+            $config['init'][] = sprintf('SET NAMES %s', $config['encoding']);
         }
 
         $config['flags'] += [
@@ -90,7 +106,7 @@ class Mysql extends Driver
         $this->_connect($dsn, $config);
 
         if (!empty($config['init'])) {
-            $connection = $this->connection();
+            $connection = $this->getConnection();
             foreach ((array)$config['init'] as $command) {
                 $connection->exec($command);
             }
@@ -121,7 +137,7 @@ class Mysql extends Driver
         $isObject = $query instanceof Query;
         $statement = $this->_connection->prepare($isObject ? $query->sql() : $query);
         $result = new MysqlStatement($statement, $this);
-        if ($isObject && $query->bufferResults() === false) {
+        if ($isObject && $query->isBufferedResultsEnabled() === false) {
             $result->bufferResults(false);
         }
 
@@ -131,8 +147,34 @@ class Mysql extends Driver
     /**
      * {@inheritDoc}
      */
+    public function schema()
+    {
+        return $this->_config['database'];
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function supportsDynamicConstraints()
     {
         return true;
+    }
+
+    /**
+     * Returns true if the server supports native JSON columns
+     *
+     * @return bool
+     */
+    public function supportsNativeJson()
+    {
+        if ($this->_supportsNativeJson !== null) {
+            return $this->_supportsNativeJson;
+        }
+
+        if ($this->_version === null) {
+            $this->_version = $this->_connection->getAttribute(PDO::ATTR_SERVER_VERSION);
+        }
+
+        return $this->_supportsNativeJson = version_compare($this->_version, '5.7.0', '>=');
     }
 }

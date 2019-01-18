@@ -44,10 +44,11 @@ class LtiConsumerController extends AppController
             //Connect to the database using the LTI data connector (not the Cake way!)
             //TODO: Could we do this in a more Cakey way?
             $dbconfig = ConnectionManager::get('default')->config();    //Get the database config using Cake ConnectionManager
-            mysql_connect($dbconfig['host'], $dbconfig['username'], $dbconfig['password']);
-            mysql_select_db($dbconfig['database']);
-            $db_connector = \LTI_Data_Connector::getDataConnector('', 'MySQL');
-            
+            $db_connection_object = mysqli_connect($dbconfig['host'], $dbconfig['username'], $dbconfig['password'], $dbconfig['database']);
+						
+            //mysqli_select_db($link, $dbconfig['database']);
+            $db_connector = \LTI_Data_Connector::getDataConnector('', $db_connection_object, 'mysqli');  
+						    
             //Verify the launch
             //This calls the onLaunch method in the LTIToolProviderComponent, which just sets ltilaunch = true
             //Normally would do the LTI launch processing there, but that has to be a static function
@@ -65,20 +66,20 @@ class LtiConsumerController extends AppController
                 //Add the tool to the session
                 $session = $this->request->session();
                 $session->write('tool', $tool);
-                
-                //Register the user
+				
+				//Register the user
                 if($user = $this->LtiConsumer->LtiContext->LtiUser->LtiUserUsers->Users->register($tool)) {
                     //Log the user in
                     $this->Auth->setUser($user->toArray());
                     
                     //If user is Staff or Admin, take them to the reporting interface
-                    if($this->LtiConsumer->LtiContext->LtiUser->isLTIStaffOrAdmin($tool)) {
-                        $this->redirect(['controller' => 'data', 'action' => 'view']);
-                    }
+                    //if($this->LtiConsumer->LtiContext->LtiUser->isLTIStaffOrAdmin($tool)) {
+                    //    $this->redirect(['controller' => 'data', 'action' => 'view']);
+                    //}
                     //Otherwise, send them to the cases index
-                    else {
+                    //else {
                         $this->redirect(['action' => 'index']);
-                    }
+                    //}
                 }
                 else {
                     throw new InternalErrorException(__('User details could not be saved.'));
@@ -100,7 +101,7 @@ class LtiConsumerController extends AppController
     
     /* Show neurosim index page */
     public function index() {
-        $this->viewBuilder()->layout('neurosim');
+        $this->viewBuilder()->layout('cerebellar-activities');
         
         $tool = $this->SessionData->getLtiTool();
         $contextId = $tool->context->lti_context_id;

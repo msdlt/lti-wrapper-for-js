@@ -3792,6 +3792,10 @@ abstract class LTI_Data_Connector {
  * @return LTI_Data_Connector Data connector object
  */
   static function getDataConnector($data_connector, $db = NULL, $type = NULL) {
+	  
+	//debug($data_connector);
+	//debug($db);
+	//debug($type);	
 
     if (!is_null($data_connector)) {
       if (!is_object($data_connector) || !is_subclass_of($data_connector, get_class())) {

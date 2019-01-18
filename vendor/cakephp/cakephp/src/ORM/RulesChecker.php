@@ -1,16 +1,16 @@
 <?php
 /**
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
+ * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
  *
  * Licensed under The MIT License
  * For full copyright and license information, please see the LICENSE.txt
  * Redistributions of files must retain the above copyright notice.
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
+ * @copyright     Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
+ * @link          https://cakephp.org CakePHP(tm) Project
  * @since         3.0.0
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 namespace Cake\ORM;
 
@@ -40,11 +40,18 @@ class RulesChecker extends BaseRulesChecker
      * ```
      *
      * @param array $fields The list of fields to check for uniqueness.
-     * @param string|null $message The error message to show in case the rule does not pass.
+     * @param string|array|null $message The error message to show in case the rule does not pass. Can
+     *   also be an array of options. When an array, the 'message' key can be used to provide a message.
      * @return callable
      */
     public function isUnique(array $fields, $message = null)
     {
+        $options = [];
+        if (is_array($message)) {
+            $options = $message + ['message' => null];
+            $message = $options['message'];
+            unset($options['message']);
+        }
         if (!$message) {
             if ($this->_useI18n) {
                 $message = __d('cake', 'This value is already in use');
@@ -55,7 +62,7 @@ class RulesChecker extends BaseRulesChecker
 
         $errorField = current($fields);
 
-        return $this->_addError(new IsUnique($fields), '_isUnique', compact('errorField', 'message'));
+        return $this->_addError(new IsUnique($fields, $options), '_isUnique', compact('errorField', 'message'));
     }
 
     /**
@@ -72,14 +79,26 @@ class RulesChecker extends BaseRulesChecker
      * $rules->add($rules->existsIn('site_id', new SitesTable(), 'Invalid Site'));
      * ```
      *
+     * Available $options are error 'message' and 'allowNullableNulls' flag.
+     * 'message' sets a custom error message.
+     * Set 'allowNullableNulls' to true to accept composite foreign keys where one or more nullable columns are null.
+     *
      * @param string|array $field The field or list of fields to check for existence by
      * primary key lookup in the other table.
      * @param object|string $table The table name where the fields existence will be checked.
-     * @param string|null $message The error message to show in case the rule does not pass.
+     * @param string|array|null $message The error message to show in case the rule does not pass. Can
+     *   also be an array of options. When an array, the 'message' key can be used to provide a message.
      * @return callable
      */
     public function existsIn($field, $table, $message = null)
     {
+        $options = [];
+        if (is_array($message)) {
+            $options = $message + ['message' => null];
+            $message = $options['message'];
+            unset($options['message']);
+        }
+
         if (!$message) {
             if ($this->_useI18n) {
                 $message = __d('cake', 'This value does not exist');
@@ -90,7 +109,7 @@ class RulesChecker extends BaseRulesChecker
 
         $errorField = is_string($field) ? $field : current($field);
 
-        return $this->_addError(new ExistsIn($field, $table), '_existsIn', compact('errorField', 'message'));
+        return $this->_addError(new ExistsIn($field, $table, $options), '_existsIn', compact('errorField', 'message'));
     }
 
     /**
@@ -114,6 +133,10 @@ class RulesChecker extends BaseRulesChecker
 
         $errorField = $field;
 
-        return $this->_addError(new ValidCount($field, $count, $operator), '_validCount', compact('count', 'operator', 'errorField', 'message'));
+        return $this->_addError(
+            new ValidCount($field),
+            '_validCount',
+            compact('count', 'operator', 'errorField', 'message')
+        );
     }
 }

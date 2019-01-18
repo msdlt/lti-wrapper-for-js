@@ -56,7 +56,6 @@ class LTI_Data_Connector_MySQLi extends LTI_Data_Connector {
 
     $this->db = $db;
     $this->dbTableNamePrefix = $dbTableNamePrefix;
-
   }
 
 

@@ -1,6 +1,6 @@
 # CakePHP Chronos
 
-[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.txt)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
 [![Build Status](https://img.shields.io/travis/cakephp/chronos/master.svg?style=flat-square)](https://travis-ci.org/cakephp/chronos)
 [![Coverage Status](https://img.shields.io/coveralls/cakephp/chronos/master.svg?style=flat-square)](https://coveralls.io/r/cakephp/chronos?branch=master)
 [![Total Downloads](https://img.shields.io/packagist/dt/cakephp/chronos.svg?style=flat-square)](https://packagist.org/packages/cakephp/chronos)
@@ -70,7 +70,7 @@ find ./src -type f -exec sed -i '' 's/Carbon/Chronos/g' {} \;
 ```
 
 At this point your code should mostly work as it did before. The biggest
-different is that Chronos instances are immutable.
+difference is that Chronos instances are immutable.
 
 ## Immutable Object Changes
 
@@ -140,7 +140,7 @@ a mutable variant of `Date`.
 
 # Documentation
 
-A more descriptive documentation can be fount at http://book.cakephp.org/3.0/en/chronos.html
+A more descriptive documentation can be found at [book.cakephp.org/3.0/en/chronos.html](http://book.cakephp.org/3.0/en/chronos.html).
 
 # API Documentation
 
