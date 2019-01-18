@@ -155,6 +155,10 @@ function findxy(res, e) {
 }
 
 function saveScores(){
+	/* You could just uncomment this and comment out the below to test locally
+	alert( "Your score has been saved");
+	*/
+	/* Save data to back end - will only work when launched as an LTI tool */	
 	data=JSON.stringify(scoresOnTheDoors);
 	$.ajax({
 		type:        "POST",
