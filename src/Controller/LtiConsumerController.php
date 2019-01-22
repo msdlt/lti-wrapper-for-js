@@ -73,13 +73,13 @@ class LtiConsumerController extends AppController
                     $this->Auth->setUser($user->toArray());
                     
                     //If user is Staff or Admin, take them to the reporting interface
-                    //if($this->LtiConsumer->LtiContext->LtiUser->isLTIStaffOrAdmin($tool)) {
-                    //    $this->redirect(['controller' => 'data', 'action' => 'view']);
-                    //}
+                    if($this->LtiConsumer->LtiContext->LtiUser->isLTIStaffOrAdmin($tool)) {
+                        $this->redirect(['controller' => 'data', 'action' => 'view']);
+                    }
                     //Otherwise, send them to the cases index
-                    //else {
+                    else {
                         $this->redirect(['action' => 'index']);
-                    //}
+                    }
                 }
                 else {
                     throw new InternalErrorException(__('User details could not be saved.'));

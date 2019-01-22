@@ -181,7 +181,8 @@ class DataTable extends Table
             'contain' => ['LtiUser' => ['LtiUserUsers' => ['Users']]],
             'order' => ['Data.modified' => 'DESC'],
         ]);
-        $results = $dataQuery->toArray();
+		
+		$results = $dataQuery->toArray();
         
         $results = $this->processResults($results);
         
@@ -193,8 +194,81 @@ class DataTable extends Table
             return [];
         }
         
-        //Get and count the cases
-        $cases = $this->getCases();
+        $writingTimeTaken = array();
+		$writingLength = array();
+		$joiningTimeTaken = array();
+		$joiningLength = array();
+		
+		$writingTimeTakenMean = array();
+		$writingLengthMean = array();
+		$joiningTimeTakenMean = array();
+		$joiningLengthMean = array();
+		
+		$writingTimeTakenCounter = 0;
+		$writingLengthCounter = 0;
+		$joiningTimeTakenCounter = 0;
+		$joiningLengthCounter = 0;
+						
+		foreach($results as &$result) {
+			//$result = json_decode($result, true);   //Decode the JSON, with objects as associative arrays
+			$result['data'] = json_decode($result['data'], true);   //Decode the JSON, with objects as associative arrays
+			//$result['data'] = json_decode($result['data'], true);   //Decode the JSON, with objects as associative arrays
+			//get first 4 characters of username
+			$collegePrefix = substr($result['lti_user']['lti_user_user']['user']['username'], 0, 4);
+			//does that key exist in the array - if not create the key
+			if(!array_key_exists($collegePrefix, $writingTimeTaken)){
+				$writingTimeTaken[$collegePrefix]=0;
+			}
+			if(!array_key_exists($collegePrefix, $writingLength)){
+				$writingLength[$collegePrefix]=0;
+			}
+			if(!array_key_exists($collegePrefix, $joiningTimeTaken)){
+				$joiningTimeTaken[$collegePrefix]=0;
+			}
+			if(!array_key_exists($collegePrefix, $joiningLength)){
+				$joiningLength[$collegePrefix]=0;
+			}
+			//add time or length to array
+			if($result['data']['writingTimeTaken']) {
+				$writingTimeTaken[$collegePrefix] += $result['data']['writingTimeTaken'];
+				$writingTimeTakenCounter = $writingTimeTakenCounter + 1;
+				debug($writingTimeTakenCounter);
+			}
+			if(isset($result['data']['writingLength'])) {
+				$writingLength[$collegePrefix] += $result['data']['writingLength'];
+				$writingLengthCounter = $writingLengthCounter + 1;
+			}
+			if(isset($result['data']['joiningTimeTaken'])) {
+				$joiningTimeTaken[$collegePrefix] += $result['data']['joiningTimeTaken'];
+				$joiningTimeTakenCounter = $joiningTimeTakenCounter + 1;
+			}
+			if(isset($result['data']['joiningLength'])) {
+				$joiningLength[$collegePrefix] += $result['data']['joiningLength'];
+				$joiningLengthCounter = $joiningLengthCounter + 1;
+			}				
+		}
+		
+		//divide by Counter to populate means
+		foreach($writingTimeTaken as $key => $value) {
+			$writingTimeTakenMean[$key]=$value/$writingTimeTakenCounter;
+		}
+		foreach($writingLength as $key => $value) {
+			$writingLengthMean[$key]=$value/$writingLengthCounter;
+		}
+		foreach($joiningTimeTaken as $key => $value) {
+			$joiningTimeTakenMean[$key]=$value/$joiningTimeTakenCounter;
+		}
+		foreach($joiningLength as $key => $value) {
+			$joiningLengthMean[$key]=$value/$joiningLengthCounter;
+		}
+		
+		$results['writingTimeTakenMean'] = $writingTimeTakenMean;
+		$results['writingLengthMean'] = $writingLengthMean;
+		$results['joiningTimeTakenMean'] = $joiningTimeTakenMean;
+		$results['joiningLengthMean'] = $joiningLengthMean;
+		
+		//Get and count the cases
+        /*$cases = $this->getCases();
         $caseCount = count($cases);
         
         //Process the results
@@ -230,7 +304,7 @@ class DataTable extends Table
             }
             
             $result['modified'] = $this->formatDatetimeObjectForView($result['modified']);
-        }
+        }*/
 
         return $results;
     }

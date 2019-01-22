@@ -148,8 +148,14 @@ class DataController extends AppController
             $this->redirect(['controller' => 'LtiConsumer', 'action' => 'index']);
         }
         
-        $cases = $this->Data->getCases();
+        //$cases = $this->Data->getCases();
         
-        $this->set('cases', $cases);
+        //$this->set('cases', $cases);
+		
+		$results = $this->Data->getResults($tool);
+        //pr($results);
+        
+        $this->set(compact('results'));
+        $this->set('_serialize', ['results']);
     }
 }

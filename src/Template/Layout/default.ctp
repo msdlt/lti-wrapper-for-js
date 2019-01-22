@@ -20,17 +20,17 @@
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        NeuroSim:
+        Cerebellar Norrington Table:
         <?= $this->fetch('title') ?>
     </title>
     <?= $this->Html->meta('icon') ?>
 
-    <?= $this->Html->css('https://fonts.googleapis.com/css?family=Roboto:400,300,500,700'); //Roboto font ?>
-    <?= $this->Html->css('https://fonts.googleapis.com/icon?family=Material+Icons'); //Material Icons font ?>
-    <?= $this->Html->css('//cdn.jsdelivr.net/flexboxgrid/6.3.0/flexboxgrid.min.css'); //Flexboxgrid ?>
-    <?= $this->Html->css('custom'); ?>
+    <!--?= $this->Html->css('https://fonts.googleapis.com/css?family=Roboto:400,300,500,700'); //Roboto font ?-->
+    <!--?= $this->Html->css('https://fonts.googleapis.com/icon?family=Material+Icons'); //Material Icons font ?-->
+    <!--?= $this->Html->css('//cdn.jsdelivr.net/flexboxgrid/6.3.0/flexboxgrid.min.css'); //Flexboxgrid ?-->
+    <!--?= $this->Html->css('custom'); ?-->
 
-    <?php echo $this->Html->script('node_modules/jquery/dist/jquery.min'); ?>
+    <!--?php echo $this->Html->script('node_modules/jquery/dist/jquery.min'); ?-->
 
     <!--[if lt IE 9]>
         <script src="node_modules/html5shiv/dist/html5shiv.min.js"></script>

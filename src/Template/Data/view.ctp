@@ -8,4 +8,6 @@
         cases: <?= json_encode($cases); ?>
     };
 <?= $this->Html->scriptEnd(); ?>
-<?= $this->Html->script('dist/results-bundle', ['block' => 'script']); ?>
+<!--?= $this->Html->script('dist/results-bundle', ['block' => 'script']); ?-->
+
+<?php debug($results) ?>
