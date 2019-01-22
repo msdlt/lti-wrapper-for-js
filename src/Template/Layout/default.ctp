@@ -25,7 +25,7 @@
     </title>
     <?= $this->Html->meta('icon') ?>
 
-    <!--?= $this->Html->css('https://fonts.googleapis.com/css?family=Roboto:400,300,500,700'); //Roboto font ?-->
+    <?= $this->Html->css('https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css'); //Data tables ?>
     <!--?= $this->Html->css('https://fonts.googleapis.com/icon?family=Material+Icons'); //Material Icons font ?-->
     <!--?= $this->Html->css('//cdn.jsdelivr.net/flexboxgrid/6.3.0/flexboxgrid.min.css'); //Flexboxgrid ?-->
     <!--?= $this->Html->css('custom'); ?-->

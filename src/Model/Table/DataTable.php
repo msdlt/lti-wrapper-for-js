@@ -232,7 +232,6 @@ class DataTable extends Table
 			if($result['data']['writingTimeTaken']) {
 				$writingTimeTaken[$collegePrefix] += $result['data']['writingTimeTaken'];
 				$writingTimeTakenCounter = $writingTimeTakenCounter + 1;
-				debug($writingTimeTakenCounter);
 			}
 			if(isset($result['data']['writingLength'])) {
 				$writingLength[$collegePrefix] += $result['data']['writingLength'];
@@ -250,22 +249,26 @@ class DataTable extends Table
 		
 		//divide by Counter to populate means
 		foreach($writingTimeTaken as $key => $value) {
-			$writingTimeTakenMean[$key]=$value/$writingTimeTakenCounter;
+			$means[$key]['writingTimeTaken']=$value/$writingTimeTakenCounter;
+			$means[$key]['writingTimeTakenCounter']=$writingTimeTakenCounter;
 		}
 		foreach($writingLength as $key => $value) {
-			$writingLengthMean[$key]=$value/$writingLengthCounter;
+			$means[$key]['writingLength']=$value/$writingLengthCounter;
+			$means[$key]['writingLengthCounter']=$writingLengthCounter;
 		}
 		foreach($joiningTimeTaken as $key => $value) {
-			$joiningTimeTakenMean[$key]=$value/$joiningTimeTakenCounter;
+			$means[$key]['joiningTimeTaken']=$value/$joiningTimeTakenCounter;
+			$means[$key]['joiningTimeTakenCounter']=$joiningTimeTakenCounter;
 		}
 		foreach($joiningLength as $key => $value) {
-			$joiningLengthMean[$key]=$value/$joiningLengthCounter;
+			$means[$key]['joiningLength']=$value/$joiningLengthCounter;
+			$means[$key]['joiningLengthCounter']=$joiningLengthCounter;
 		}
 		
-		$results['writingTimeTakenMean'] = $writingTimeTakenMean;
-		$results['writingLengthMean'] = $writingLengthMean;
-		$results['joiningTimeTakenMean'] = $joiningTimeTakenMean;
-		$results['joiningLengthMean'] = $joiningLengthMean;
+		$results['means'] = $means;
+		//$results['writingLengthMean'] = $writingLengthMean;
+		//$results['joiningTimeTakenMean'] = $joiningTimeTakenMean;
+		//$results['joiningLengthMean'] = $joiningLengthMean;
 		
 		//Get and count the cases
         /*$cases = $this->getCases();
