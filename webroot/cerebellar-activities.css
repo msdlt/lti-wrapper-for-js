@@ -1,3 +1,29 @@
+html, body {
+	font-family: 'Helvetica', 'Arial', sans-serif;
+	height: 100%;
+	width: 100%;
+	margin: 0px;
+}
+
+canvas {
+	/*height: 80%;
+	width: 80%;*/
+	position:absolute;
+	top:10%;
+	left:10%; 
+	border:2px solid;
+}
+
+h1#exercise-header {
+	margin-bottom: 0px;
+	margin-left: 10%;
+}
+
+p#exercise-sub-header {
+	margin-top: 5px;
+	margin-left: 10%;
+}
+
 .button {
 	background-color: #4CAF50; /* Green */
 	border: none;
@@ -12,6 +38,11 @@
 	border-radius:12px;
 }
 
+button:disabled,
+button[disabled]{
+	background-color: #cccccc;
+}
+
 .clear{
 	position:absolute;
 	top:85%;
@@ -22,4 +53,22 @@
 	position:absolute;
 	top:85%;
 	left:55%;
+}
+
+.dot {
+	height: 15px;
+	width: 15px;
+	background-color: #000000;
+	border-radius: 50%;
+	display: inline-block;
+	position:absolute;
+	z-index:-1;
+	display: none;
+}
+	
+.dot-label {
+    position:absolute;
+	/*font-family:Helvetica; */
+	z-index:-1;
+	display: none;
 }

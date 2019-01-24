@@ -6,8 +6,8 @@
 			<th>College</th>
 			<th>Writing (time)</th>
 			<th>Writing (length)</th>
-			<th>Dots (time)</th>
-			<th>Dots (length)</th>
+			<th>Join the dots (time)</th>
+			<th>Join the dots (length)</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -30,7 +30,12 @@
 				<th>Dots (length)</th>
             </tr>
         </tfoot-->
-    </table>
+</table>
+<?= $this->Html->link(
+    'Go to tasks',
+    '/',
+    ['class' => 'button', 'target' => '_blank']
+); ?>
 
 <?= $this->Html->script('https://code.jquery.com/jquery-3.3.1.js'); ?>
 <?= $this->Html->script('https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js'); ?>

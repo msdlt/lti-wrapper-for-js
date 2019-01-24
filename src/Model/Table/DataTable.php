@@ -204,10 +204,10 @@ class DataTable extends Table
 		$joiningTimeTakenMean = array();
 		$joiningLengthMean = array();
 		
-		$writingTimeTakenCounter = 0;
-		$writingLengthCounter = 0;
-		$joiningTimeTakenCounter = 0;
-		$joiningLengthCounter = 0;
+		$writingTimeTakenCounter = array();
+		$writingLengthCounter = array();
+		$joiningTimeTakenCounter = array();
+		$joiningLengthCounter = array();
 						
 		foreach($results as &$result) {
 			//$result = json_decode($result, true);   //Decode the JSON, with objects as associative arrays
@@ -218,51 +218,55 @@ class DataTable extends Table
 			//does that key exist in the array - if not create the key
 			if(!array_key_exists($collegePrefix, $writingTimeTaken)){
 				$writingTimeTaken[$collegePrefix]=0;
+				$writingTimeTakenCounter[$collegePrefix]=0;
 			}
 			if(!array_key_exists($collegePrefix, $writingLength)){
 				$writingLength[$collegePrefix]=0;
+				$writingLengthCounter[$collegePrefix]=0;
 			}
 			if(!array_key_exists($collegePrefix, $joiningTimeTaken)){
 				$joiningTimeTaken[$collegePrefix]=0;
+				$joiningTimeTakenCounter[$collegePrefix]=0;
 			}
 			if(!array_key_exists($collegePrefix, $joiningLength)){
 				$joiningLength[$collegePrefix]=0;
+				$joiningLengthCounter[$collegePrefix]=0;
 			}
 			//add time or length to array
 			if($result['data']['writingTimeTaken']) {
 				$writingTimeTaken[$collegePrefix] += $result['data']['writingTimeTaken'];
-				$writingTimeTakenCounter = $writingTimeTakenCounter + 1;
+				$writingTimeTakenCounter[$collegePrefix] = $writingTimeTakenCounter[$collegePrefix] + 1;
 			}
 			if(isset($result['data']['writingLength'])) {
 				$writingLength[$collegePrefix] += $result['data']['writingLength'];
-				$writingLengthCounter = $writingLengthCounter + 1;
+				$writingLengthCounter[$collegePrefix] = $writingLengthCounter[$collegePrefix] + 1;
 			}
 			if(isset($result['data']['joiningTimeTaken'])) {
 				$joiningTimeTaken[$collegePrefix] += $result['data']['joiningTimeTaken'];
-				$joiningTimeTakenCounter = $joiningTimeTakenCounter + 1;
+				$joiningTimeTakenCounter[$collegePrefix] = $joiningTimeTakenCounter[$collegePrefix] + 1;
 			}
 			if(isset($result['data']['joiningLength'])) {
 				$joiningLength[$collegePrefix] += $result['data']['joiningLength'];
-				$joiningLengthCounter = $joiningLengthCounter + 1;
+				$joiningLengthCounter[$collegePrefix] = $joiningLengthCounter[$collegePrefix] + 1;
 			}				
 		}
 		
 		//divide by Counter to populate means
 		foreach($writingTimeTaken as $key => $value) {
-			$means[$key]['writingTimeTaken']=$value/$writingTimeTakenCounter;
-			$means[$key]['writingTimeTakenCounter']=$writingTimeTakenCounter;
+			$means[$key]['writingTimeTaken']=$value/$writingTimeTakenCounter[$key];
+			$means[$key]['writingTimeTakenCounter']=$writingTimeTakenCounter[$key];
 		}
 		foreach($writingLength as $key => $value) {
-			$means[$key]['writingLength']=$value/$writingLengthCounter;
-			$means[$key]['writingLengthCounter']=$writingLengthCounter;
+			$means[$key]['writingLength']=$value/$writingLengthCounter[$key];
+			$means[$key]['writingLengthCounter']=$writingLengthCounter[$key];
 		}
 		foreach($joiningTimeTaken as $key => $value) {
-			$means[$key]['joiningTimeTaken']=$value/$joiningTimeTakenCounter;
-			$means[$key]['joiningTimeTakenCounter']=$joiningTimeTakenCounter;
+			$means[$key]['joiningTimeTaken']=$value/$joiningTimeTakenCounter[$key];
+			$means[$key]['joiningTimeTakenCounter']=$joiningTimeTakenCounter[$key];
 		}
 		foreach($joiningLength as $key => $value) {
-			$means[$key]['joiningLength']=$value/$joiningLengthCounter;
-			$means[$key]['joiningLengthCounter']=$joiningLengthCounter;
+			$means[$key]['joiningLength']=$value/$joiningLengthCounter[$key];
+			$means[$key]['joiningLengthCounter']=$joiningLengthCounter[$key];
 		}
 		
 		$results['means'] = $means;
